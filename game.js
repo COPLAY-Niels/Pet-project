@@ -9,6 +9,14 @@ const STORAGE_KEY = "blackjack-balance";
 const CHIP_VALUES = [500, 100, 50, 25, 10, 5, 1]; // til at vise gevinster som chips
 const STACK_MAX = 10; // chips pr. stak før der startes en ny ved siden af
 
+// Portrætter til billedkortene (assets/people/<navn>.jpg).
+// Ved hver blanding fordeles de tilfældigt på de 12 billedkort (B/D/K i hver kulør).
+const PEOPLE = [
+  "anna-sophia", "didde", "frederik", "ida", "jonas", "kristoffer", "mandeep",
+  "marie", "mathias", "michael", "morten", "niels", "pia", "victor",
+];
+const FACE_RANKS = ["J", "Q", "K"];
+
 const $ = (id) => document.getElementById(id);
 const el = {
   balance: $("balance"),
@@ -32,6 +40,7 @@ const el = {
 
 const state = {
   shoe: [],
+  faces: {},   // "K♠" -> "niels" osv.
   hands: [],   // spillerens hænder: { cards, bet, chips, winChips, done, splitAces, result }
   active: 0,   // index på den hånd der spilles nu
   dealer: [],
@@ -43,19 +52,34 @@ const state = {
 
 // ---------- Kortspil ----------
 
+function shuffle(arr) {
+  // Fisher–Yates
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function assignFaces() {
+  const people = shuffle([...PEOPLE]);
+  const faces = {};
+  let i = 0;
+  for (const suit of SUITS) {
+    for (const rank of FACE_RANKS) faces[rank + suit] = people[i++ % people.length];
+  }
+  return faces;
+}
+
 function buildShoe() {
+  state.faces = assignFaces();
   const shoe = [];
   for (let d = 0; d < DECKS; d++) {
     for (const suit of SUITS) {
       for (const rank of RANKS) shoe.push({ rank, suit });
     }
   }
-  // Fisher–Yates
-  for (let i = shoe.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shoe[i], shoe[j]] = [shoe[j], shoe[i]];
-  }
-  return shoe;
+  return shuffle(shoe);
 }
 
 function draw() {
@@ -146,10 +170,14 @@ function renderCard(card, hidden = false) {
     return div;
   }
   const red = card.suit === "♥" || card.suit === "♦";
-  div.className = `card ${red ? "red" : "black"}`;
+  const person = FACE_RANKS.includes(card.rank) && state.faces[card.rank + card.suit];
+  div.className = `card ${red ? "red" : "black"}${person ? " face" : ""}`;
+  const middle = person
+    ? `<img src="assets/people/${person}.jpg" alt="" draggable="false">`
+    : `<span class="pip">${card.suit}</span>`;
   div.innerHTML =
     `<span class="corner tl">${card.rank}<br>${card.suit}</span>` +
-    `<span class="pip">${card.suit}</span>` +
+    middle +
     `<span class="corner br">${card.rank}<br>${card.suit}</span>`;
   return div;
 }
