@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blackjack</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="table">
+    <header class="topbar">
+      <h1>Blackjack</h1>
+      <div class="stats">
+        <span>Saldo: <strong id="balance">1000</strong> kr</span>
+        <span>Indsats: <strong id="bet">0</strong> kr</span>
+      </div>
+    </header>
+
+    <section class="hand-area">
+      <h2>Dealer <span class="score" id="dealer-score"></span></h2>
+      <div class="hand" id="dealer-hand"></div>
+    </section>
+
+    <div class="message" id="message">Placér din indsats for at starte.</div>
+
+    <section class="hand-area">
+      <h2>Dig</h2>
+      <div class="bet-spot" id="bet-spot" title="Klik for at tage den sidste chip tilbage">
+        <div class="stack" id="bet-stack"></div>
+        <span class="bet-spot-label">Indsats</span>
+      </div>
+      <div class="player-hands" id="player-hands"></div>
+    </section>
+
+    <section class="controls">
+      <div class="chips" id="betting">
+        <button class="chip" data-value="10">10</button>
+        <button class="chip" data-value="25">25</button>
+        <button class="chip" data-value="50">50</button>
+        <button class="chip" data-value="100">100</button>
+        <button class="btn secondary" id="clear-bet">Nulstil</button>
+        <button class="btn primary" id="deal">Giv kort</button>
+      </div>
+      <div class="actions hidden" id="actions">
+        <button class="btn" id="hit">Træk (H)</button>
+        <button class="btn" id="stand">Stå (S)</button>
+        <button class="btn" id="double">Doble (D)</button>
+        <button class="btn" id="split">Split (P)</button>
+      </div>
+      <button class="btn secondary hidden" id="reset">Start forfra med 1000 kr</button>
+    </section>
+
+    <footer class="rules">Blackjack betaler 3:2 · Dealer står på 17 · Split op til 4 hænder · 6 kortspil i skoen</footer>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
