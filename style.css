@@ -1,11 +1,15 @@
+/* CO:PLAY farver (fra CoPlay_Farver.pdf) */
 :root {
-  --felt: #0f5a3a;
-  --felt-dark: #0a3f29;
-  --gold: #e8c26a;
-  --text: #f4f1e8;
-  --card: #fdfcf8;
-  --red: #c62828;
-  --black: #1d1d1d;
+  --navy: #15253E;      /* P540 – primær */
+  --navy-soft: #1d3252;
+  --blue: #4872B8;      /* P2172 */
+  --light: #71CDDC;     /* P319 */
+  --sand: #D9C0A9;      /* P2310 */
+  --coral: #E53D3C;     /* P199 */
+  --white: #FFFFFF;
+  --text: #FFFFFF;
+  --muted: rgba(255,255,255,0.6);
+  --card: #FFFFFF;
 }
 
 * { box-sizing: border-box; }
@@ -13,46 +17,90 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "Inter Tight", "Aeonik", system-ui, -apple-system, "Segoe UI", sans-serif;
   color: var(--text);
-  background: radial-gradient(ellipse at center, var(--felt) 0%, var(--felt-dark) 100%);
+  background: var(--navy);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* CO:PLAY ID-element (prik-mønster) nederst til venstre, som på desktop-baggrunden */
+body::before {
+  content: "";
+  position: fixed;
+  left: -220px;
+  bottom: -220px;
+  width: 720px;
+  height: 720px;
+  background: url("assets/id-element.svg") center / contain no-repeat;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .table {
-  max-width: 820px;
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 20px 16px 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
   min-height: 100vh;
 }
+
+/* ---------- Top ---------- */
 
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-  padding-bottom: 12px;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(113,205,220,0.25);
 }
 
-h1 { margin: 0; font-size: 1.8rem; color: var(--gold); letter-spacing: 0.05em; }
-h2 { margin: 0 0 8px; font-size: 1rem; font-weight: 600; opacity: 0.9; }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+.brand img { height: 26px; display: block; }
+.brand .divider { width: 1px; height: 26px; background: rgba(113,205,220,0.5); }
 
-.stats { display: flex; gap: 20px; font-size: 1rem; }
-.stats strong { color: var(--gold); }
+.stats { display: flex; gap: 24px; font-size: 0.95rem; color: var(--muted); }
+.stats strong { color: var(--light); font-weight: 600; }
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--light);
+}
 
 .score {
   display: inline-block;
   min-width: 2em;
-  padding: 1px 8px;
-  border-radius: 10px;
-  background: rgba(0,0,0,0.3);
-  font-size: 0.9rem;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: rgba(113,205,220,0.15);
+  color: var(--white);
+  font-size: 0.85rem;
+  letter-spacing: normal;
+  text-align: center;
 }
 .score:empty { display: none; }
+
+/* ---------- Kort ---------- */
 
 .hand {
   display: flex;
@@ -61,63 +109,23 @@ h2 { margin: 0 0 8px; font-size: 1rem; font-weight: 600; opacity: 0.9; }
   min-height: 130px;
 }
 
-.player-hands {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  min-height: 150px;
-}
-
-.hand-box {
-  padding: 8px;
-  border: 2px solid transparent;
-  border-radius: 10px;
-  transition: border-color 0.2s, background 0.2s;
-}
-.hand-box.active {
-  border-color: var(--gold);
-  background: rgba(0,0,0,0.18);
-}
-
-.hand-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-  min-height: 1.4em;
-}
-
-.result {
-  padding: 1px 8px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 0.85rem;
-}
-.result.win  { background: #2e8b3a; }
-.result.lose { background: #a3302a; }
-.result.push { background: rgba(255,255,255,0.25); }
-
-/* Mindre kort når der er flere hænder på bordet */
-.player-hands.multi .card { width: 64px; height: 92px; }
-.player-hands.multi .card .pip { font-size: 1.8rem; }
-.player-hands.multi .card .corner { font-size: 0.85rem; }
-.player-hands.multi .hand { min-height: 92px; gap: 6px; }
-
 .card {
-  width: 84px;
-  height: 120px;
-  border-radius: 8px;
+  width: 88px;
+  height: 124px;
+  border-radius: 6px;
   background: var(--card);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
   position: relative;
+  overflow: hidden;
   font-weight: 700;
   animation: deal 0.25s ease-out;
 }
-.card.red { color: var(--red); }
-.card.black { color: var(--black); }
+.card.red { color: var(--coral); }
+.card.black { color: var(--navy); }
+
 .card .corner {
   position: absolute;
+  z-index: 2;
   line-height: 1;
   text-align: center;
   font-size: 1rem;
@@ -131,10 +139,41 @@ h2 { margin: 0 0 8px; font-size: 1rem; font-weight: 600; opacity: 0.9; }
   place-items: center;
   font-size: 2.4rem;
 }
+
+/* Billedkort med portræt */
+.card.face img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card.face::after {
+  /* tynd farvet ramme inden for kortet */
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.card.face .corner {
+  background: var(--white);
+  padding: 3px 3px 2px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.card.face .corner.tl { top: 3px; left: 3px; }
+.card.face .corner.br { bottom: 3px; right: 3px; }
+
+/* Bagside: mørkeblå med CO-symbolet */
 .card.back {
   background:
-    repeating-linear-gradient(45deg, #7a1f2b 0 6px, #942836 6px 12px);
-  border: 4px solid var(--card);
+    url("assets/co-symbol.svg") center / 72% no-repeat,
+    var(--navy-soft);
+  border: 4px solid var(--white);
+  box-shadow: inset 0 0 0 2px var(--light), 0 6px 14px rgba(0,0,0,0.35);
 }
 
 @keyframes deal {
@@ -142,13 +181,17 @@ h2 { margin: 0 0 8px; font-size: 1rem; font-weight: 600; opacity: 0.9; }
   to { transform: none; opacity: 1; }
 }
 
+/* ---------- Besked ---------- */
+
 .message {
   text-align: center;
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.15rem;
+  font-weight: 500;
   min-height: 1.6em;
-  color: var(--gold);
+  color: var(--light);
 }
+
+/* ---------- Knapper ---------- */
 
 .controls {
   display: flex;
@@ -166,27 +209,94 @@ h2 { margin: 0 0 8px; font-size: 1rem; font-weight: 600; opacity: 0.9; }
 }
 
 button { font: inherit; cursor: pointer; }
-button:disabled { opacity: 0.4; cursor: not-allowed; }
+button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.btn {
+  padding: 10px 22px;
+  border-radius: 4px;
+  border: 1px solid var(--white);
+  background: var(--white);
+  color: var(--navy);
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.btn:not(:disabled):hover { background: var(--light); border-color: var(--light); }
+.btn.primary { background: var(--light); border-color: var(--light); }
+.btn.primary:not(:disabled):hover { background: var(--white); border-color: var(--white); }
+.btn.secondary { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.4); }
+.btn.secondary:not(:disabled):hover { background: rgba(255,255,255,0.1); color: var(--white); border-color: var(--white); }
 
 .chip {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  border: 4px dashed rgba(255,255,255,0.8);
-  color: #fff;
+  border: 4px dashed rgba(255,255,255,0.85);
+  color: var(--white);
   font-weight: 700;
   box-shadow: 0 3px 6px rgba(0,0,0,0.4);
   transition: transform 0.1s;
 }
 .chip:not(:disabled):hover { transform: translateY(-3px); }
-/* Chipfarver – bruges både af knapperne og af chips på bordet */
-[data-value="1"]   { background: #8a8a8a; }
-[data-value="5"]   { background: #c77d1a; }
-[data-value="10"]  { background: #1e63b8; }
-[data-value="25"]  { background: #2e8b3a; }
-[data-value="50"]  { background: #b8321e; }
-[data-value="100"] { background: #222; }
-[data-value="500"] { background: #6b2fa3; }
+
+/* Chipfarver i CO:PLAY-paletten – bruges både af knapperne og chips på bordet */
+[data-value="1"]   { background: #8b97a8; }
+[data-value="5"]   { background: var(--sand); color: var(--navy) !important; }
+[data-value="10"]  { background: var(--blue); }
+[data-value="25"]  { background: var(--light); color: var(--navy) !important; }
+[data-value="50"]  { background: var(--coral); }
+[data-value="100"] { background: #000000; }
+[data-value="500"] { background: var(--white); color: var(--navy) !important; border-color: var(--navy) !important; }
+
+.hidden { display: none !important; }
+
+.rules { text-align: center; font-size: 0.78rem; color: var(--muted); }
+
+/* ---------- Spillerens hænder ---------- */
+
+.player-hands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-height: 150px;
+}
+
+.hand-box {
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.hand-box.active {
+  border-color: var(--light);
+  background: rgba(113,205,220,0.08);
+}
+
+.hand-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  min-height: 1.4em;
+}
+.hand-info .score { margin-left: 0; }
+.hand-info .label { color: var(--muted); }
+
+.result {
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.result.win  { background: var(--light); color: var(--navy); }
+.result.lose { background: var(--coral); color: var(--white); }
+.result.push { background: rgba(255,255,255,0.2); color: var(--white); }
+
+/* Mindre kort når der er flere hænder på bordet */
+.player-hands.multi .card { width: 66px; height: 94px; }
+.player-hands.multi .card .pip { font-size: 1.8rem; }
+.player-hands.multi .card .corner { font-size: 0.8rem; }
+.player-hands.multi .hand { min-height: 94px; gap: 6px; }
 
 /* ---------- Chips på bordet ---------- */
 
@@ -194,7 +304,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
   width: 130px;
   height: 130px;
   margin: 0 auto;
-  border: 2px dashed rgba(232,194,106,0.6);
+  border: 1.5px dashed rgba(113,205,220,0.6);
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -204,11 +314,11 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
   cursor: pointer;
 }
 .bet-spot-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--gold);
-  opacity: 0.7;
+  letter-spacing: 0.14em;
+  color: var(--light);
+  opacity: 0.8;
 }
 
 .stack {
@@ -231,7 +341,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
   border-radius: 50%;
   border: 3px dashed rgba(255,255,255,0.85);
   box-shadow: 0 2px 0 rgba(0,0,0,0.45), 0 3px 6px rgba(0,0,0,0.3);
-  color: #fff;
+  color: var(--white);
   font-size: 0.7rem;
   font-weight: 700;
   display: grid;
@@ -252,29 +362,17 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
   min-height: 40px;
 }
 .stack.lost { opacity: 0.25; filter: grayscale(0.8); transition: opacity 0.4s; }
-.stack.win .mini-chip { box-shadow: 0 2px 0 rgba(0,0,0,0.45), 0 0 10px rgba(232,194,106,0.8); }
+.stack.win .mini-chip { box-shadow: 0 2px 0 rgba(0,0,0,0.45), 0 0 10px rgba(113,205,220,0.9); }
 
-.btn {
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  background: var(--card);
-  color: var(--black);
-  font-weight: 600;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-.btn.primary { background: var(--gold); }
-.btn.secondary { background: rgba(255,255,255,0.15); color: var(--text); }
-.btn:not(:disabled):hover { filter: brightness(1.1); }
-
-.hidden { display: none !important; }
-
-.rules { text-align: center; font-size: 0.8rem; opacity: 0.6; }
+/* ---------- Mobil ---------- */
 
 @media (max-width: 480px) {
   .card { width: 64px; height: 92px; }
   .card .pip { font-size: 1.8rem; }
-  .card .corner { font-size: 0.85rem; }
+  .card .corner { font-size: 0.8rem; }
   .hand { min-height: 100px; gap: 6px; }
-  .stats { gap: 12px; font-size: 0.9rem; }
+  .stats { gap: 14px; font-size: 0.85rem; }
+  .brand { font-size: 1.2rem; gap: 10px; }
+  .brand img { height: 20px; }
+  .brand .divider { height: 20px; }
 }
